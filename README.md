@@ -8,7 +8,7 @@ This project implements a scalable data pipeline for e-commerce analytics, proce
 
 ## 🏗️ Architecture
 
-[Insert architecture diagram here - Recommended to use draw.io or similar tool]
+[TODO]
 
 ## 🔄 Pipeline Flow
 
