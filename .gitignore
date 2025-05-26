@@ -207,3 +207,6 @@ terraform.rc
 # Ignore Terraform state files
 terraform.tfstate.backup
 terraform.tfstate.*.backup
+
+# Ignore local krn_local directory
+krn_local/*
