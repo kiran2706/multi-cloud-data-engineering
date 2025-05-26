@@ -172,3 +172,38 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+ecommerce-data-pipeline/infrastructure/aws/auth.sh
+terraform-user_accessKeys.csv
+
+# Ignore local .terraform directories (plugin binaries, caches, etc.)
+**/.terraform/
+
+# Ignore crash logs
+crash.log
+
+# Ignore all Terraform plan output files
+*.tfplan
+
+# Ignore all Terraform state files (leave out if you're storing remotely via S3)
+*.tfstate
+*.tfstate.backup
+
+# Ignore sensitive variable files — unless intentionally versioned
+*.auto.tfvars
+*.auto.tfvars.json
+*.tfvars
+*.tfvars.json
+
+# Ignore override files (for local testing)
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Ignore override configuration for Terraform CLI
+.terraformrc
+terraform.rc
+
+# Ignore Terraform state files
+terraform.tfstate.backup
+terraform.tfstate.*.backup
