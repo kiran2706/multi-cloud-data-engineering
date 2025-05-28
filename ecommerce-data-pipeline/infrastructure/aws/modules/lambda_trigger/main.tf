@@ -1,46 +1,26 @@
-# Get AWS account ID dynamically
-data "aws_caller_identity" "current" {}
+# Create the Lambda function
+resource "aws_lambda_function" "this" {
+  # Name of the function
+  function_name = var.function_name
 
-# IAM Role for Lambda
-resource "aws_iam_role" "lambda_exec_role" {
-  name = "lambda-trigger-kinesis-role"
+  # Runtime environment, e.g., python3.9
+  runtime = var.runtime
 
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
-      {
-        Effect = "Allow",
-        Principal = {
-          Service = "lambda.amazonaws.com"
-        },
-        Action = "sts:AssumeRole"
-      }
-    ]
-  })
-}
+  # The handler is the entry point (e.g., main.trigger_ingestion)
+  handler = var.handler
 
-# IAM Policy for writing to Kinesis
-resource "aws_iam_policy" "put_to_kinesis" {
-  name        = "LambdaPutToKinesisPolicy"
-  description = "Allows lambda to put records into the Kinesis stream"
+  # Path to the ZIP deployment package
+  filename = var.source_zip_file
 
-  policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
-      {
-        Effect = "Allow",
-        Action = [
-          "kinesis:PutRecord",
-          "kinesis:PutRecords"
-        ],
-        Resource = "arn:aws:kinesis:${var.region}:${data.aws_caller_identity.current.account_id}:stream/${var.kinesis_stream_name}"
-      }
-    ]
-  })
-}
+  # Memory allocated to the function
+  memory_size = var.memory_size
 
-# Attach policy to role
-resource "aws_iam_role_policy_attachment" "attach_kinesis_policy" {
-  role       = aws_iam_role.lambda_exec_role.name
-  policy_arn = aws_iam_policy.put_to_kinesis.arn
+  # Maximum execution time in seconds
+  timeout = var.timeout
+
+  # IAM Role ARN for execution — passed from iam module
+  role = var.lambda_role_arn
+
+  # Track changes to ZIP file contents
+  source_code_hash = filebase64sha256(var.source_zip_file)
 }
