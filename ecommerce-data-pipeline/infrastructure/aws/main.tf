@@ -4,8 +4,8 @@ module "kinesis_stream" {
   shard_count  = 1
 }
 
-module "lambda_trigger" {
-  source               = "./modules/lambda_trigger"
+module "iam" {
+  source               = "./modules/iam"
   region               = "us-east-1"
   kinesis_stream_name  = module.kinesis_stream.stream_name
 }
