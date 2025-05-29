@@ -24,5 +24,9 @@ module "lambda_trigger" {
   handler              = "main.trigger_ingestion"
   memory_size          = 128
   timeout              = 30
-  source_zip_file      = "${path.module}/lambda_functions/trigger_ingestion/deployment.zip"
+  source_zip_file      = "${path.root}/../../lambda_functions/trigger_ingestion/deployment.zip"
+  environment_variables = {
+                            "DATABASE_URL" = "your-database-url"
+                            "API_KEY"      = "your-api-key"
+                            }
 }

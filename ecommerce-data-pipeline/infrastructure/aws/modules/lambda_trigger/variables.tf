@@ -53,3 +53,10 @@ variable "kinesis_stream_name" {
   description = "Name of the Kinesis stream (for reference)"
   type        = string
 }
+
+# Environment variables for the Lambda function
+variable "environment_variables" {
+  description = "Environment variables for the Lambda function"
+  type        = map(string)
+  default     = {}
+}

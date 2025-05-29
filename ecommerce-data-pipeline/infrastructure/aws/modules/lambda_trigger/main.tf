@@ -23,4 +23,23 @@ resource "aws_lambda_function" "this" {
 
   # Track changes to ZIP file contents
   source_code_hash = filebase64sha256(var.source_zip_file)
+
+  # Environment variables for the Lambda function
+  environment {
+    variables = var.environment_variables
+  }
+}
+
+# Create a function URL to make the Lambda publicly accessible
+resource "aws_lambda_function_url" "this" {
+  function_name      = aws_lambda_function.this.function_name
+  authorization_type = "NONE"  # Makes the function publicly accessible
+
+  cors {
+    allow_origins     = ["*"]  # Allows requests from any origin
+    allow_methods     = ["*"]  # Allows all HTTP methods
+    allow_headers     = ["*"]  # Allows all headers
+    expose_headers    = ["*"]  # Exposes all headers
+    max_age          = 86400  # Cache preflight requests for 24 hours
+  }
 }
