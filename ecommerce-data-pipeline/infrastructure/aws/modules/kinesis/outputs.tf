@@ -1,7 +1,9 @@
 output "stream_name" {
-  value = aws_kinesis_stream.this.name
+  description = "Name of the created Kinesis stream"
+  value       = aws_kinesis_stream.stream.name
 }
 
 output "stream_arn" {
-  value = aws_kinesis_stream.this.arn
+  description = "ARN of the created Kinesis stream"
+  value       = aws_kinesis_stream.stream.arn
 }

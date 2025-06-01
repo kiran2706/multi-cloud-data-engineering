@@ -1,4 +1,4 @@
-resource "aws_kinesis_stream" "this" {
-  name        = var.stream_name
-  shard_count = var.shard_count
+resource "aws_kinesis_stream" "stream" {
+  name             = var.stream_name
+  shard_count      = var.shard_count
 }
