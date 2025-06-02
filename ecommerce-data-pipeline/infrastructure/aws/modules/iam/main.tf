@@ -1,7 +1,7 @@
 # Get AWS account ID dynamically
 data "aws_caller_identity" "current" {}
 
-# IAM Role for Lambda
+# IAM Role for Lambda execution
 resource "aws_iam_role" "lambda_exec_role" {
   name = "lambda-trigger-kinesis-role"
 
@@ -19,10 +19,10 @@ resource "aws_iam_role" "lambda_exec_role" {
   })
 }
 
-# IAM Policy for writing to Kinesis
+# IAM Policy allowing Lambda to put records into Kinesis stream
 resource "aws_iam_policy" "put_to_kinesis" {
   name        = "LambdaPutToKinesisPolicy"
-  description = "Allows lambda to put records into the Kinesis stream"
+  description = "Allows Lambda to put records into the Kinesis stream"
 
   policy = jsonencode({
     Version = "2012-10-17",
@@ -39,12 +39,11 @@ resource "aws_iam_policy" "put_to_kinesis" {
   })
 }
 
-# IAM Policy: Allows Lambda to write logs to CloudWatch Logs
+# IAM Policy allowing Lambda to write logs to CloudWatch Logs
 resource "aws_iam_policy" "lambda_cloudwatch_logs" {
-  name        = "LambdaCloudWatchLogsPolicy"  # Name of the IAM policy
-  description = "Allows Lambda functions to write logs to CloudWatch"
+  name        = "LambdaCloudWatchLogsPolicy"
+  description = "Allows Lambda functions to write logs to CloudWatch Logs"
 
-  # Define the permissions this policy grants
   policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
@@ -61,13 +60,13 @@ resource "aws_iam_policy" "lambda_cloudwatch_logs" {
   })
 }
 
-# Attach policy to role
+# Attach Kinesis put policy to the Lambda execution role
 resource "aws_iam_role_policy_attachment" "attach_kinesis_policy" {
   role       = aws_iam_role.lambda_exec_role.name
   policy_arn = aws_iam_policy.put_to_kinesis.arn
 }
 
-# Attach CloudWatch Logs policy
+# Attach CloudWatch Logs policy to the Lambda execution role
 resource "aws_iam_role_policy_attachment" "attach_lambda_cloudwatch_logs" {
   role       = aws_iam_role.lambda_exec_role.name
   policy_arn = aws_iam_policy.lambda_cloudwatch_logs.arn

@@ -9,9 +9,9 @@ module "kinesis_stream" {
 
 # IAM module: sets up roles and permissions for Lambda to access Kinesis
 module "iam" {
-  source               = "./modules/iam"
-  region               = var.aws_region         # AWS region for deployment
-  kinesis_stream_name  = module.kinesis_stream.stream_name  # References the Kinesis stream created above
+  source              = "./modules/iam"
+  region              = var.aws_region
+  kinesis_stream_name = module.kinesis_stream.stream_name
 }
 
 # Lambda trigger module: configures the Lambda function that writes to Kinesis
@@ -35,20 +35,31 @@ module "lambda_trigger" {
   environment_variables = var.lambda_environment_variables
 }
 
+# API Gateway module: exposes Lambda through HTTP POST /ingest
+module "api_gateway" {
+  source      = "./modules/api_gateway"
+  api_name    = var.api_gateway_name
+  lambda_arn  = module.lambda_trigger.lambda_function_arn
+  stage_name  = var.api_gateway_stage_name
+}
+
 # Output the name of the created Kinesis stream
 output "kinesis_stream_name" {
   description = "Name of the created Kinesis stream"
   value       = module.kinesis_stream.stream_name
 }
 
-# Output the name of the created Lambda function
 output "lambda_function_name" {
   description = "Name of the created Lambda function"
   value       = module.lambda_trigger.lambda_function_name
 }
 
-# Output the ARN of the created Lambda function
 output "lambda_function_arn" {
   description = "ARN of the created Lambda function"
   value       = module.lambda_trigger.lambda_function_arn
+}
+
+output "api_gateway_invoke_url" {
+  description = "Base URL for invoking the API Gateway HTTP endpoint"
+  value       = module.api_gateway.invoke_url
 }

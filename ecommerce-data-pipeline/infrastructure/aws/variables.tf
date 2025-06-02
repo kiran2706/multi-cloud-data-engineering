@@ -71,6 +71,18 @@ variable "lambda_environment_variables" {
   }
 }
 
+variable "api_gateway_name" {
+  description = "Name of the API Gateway"
+  type        = string
+  default     = "ecommerce-http-api"
+}
+
+variable "api_gateway_stage_name" {
+  description = "Name of the API Gateway stage"
+  type        = string
+  default     = "prod"
+}
+
 # Tags to apply to all resources
 variable "tags" {
   description = "Tags to apply to all resources"
