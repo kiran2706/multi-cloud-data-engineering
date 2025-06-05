@@ -9,7 +9,7 @@ Legend:
 |------|--------|
 | 🟨 Set up AWS account with billing alerts | |
 | 🟨 Setup Terraform and connect AWS CLI | |
-| ⬜ Enable API Gateway / HTTP trigger | |
+| 🟨 Enable API Gateway / HTTP trigger | |
 | 🟨 Create AWS Lambda (trigger_ingestion) | |
 | 🟨 Create Kinesis Data Stream | |
 | ⬜ Publish data to Kinesis stream | |
